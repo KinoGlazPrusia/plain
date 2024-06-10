@@ -14,7 +14,7 @@ import { PlainComponent } from 'plain-reactive'
 
 class MyComponent extends PlainComponent
 {
-    // 1. Initialise the component with a name and a route to its styles
+    // 1. Initialise the component with a name and a path to its styles
     constructor() {
         super('my-component', 'myComponent/myComponent.css')
     }
@@ -28,7 +28,7 @@ class MyComponent extends PlainComponent
 
     // 3. Create event listeners for your component in a jQuery fashion
     listeners() {
-        this.$('.btn').onclick = () => console.log('Eureka!')
+        this.$('.my-btn').onclick = () => console.log('Eureka!')
     }
 }
 
@@ -123,7 +123,7 @@ this.connect(emitter, 'signal-name', callback)
 // When you connect to an element signal, each time that element emits the signal
 // your element will execute the callback function you define here.
 ```
-## That's almost everything (there's another module in progress PlainContext)
+### That's almost everything (there's another module in progress PlainContext)
 
 ## Example with state and signals
 *emitter.js*
