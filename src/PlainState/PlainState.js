@@ -1,4 +1,4 @@
-export class PlainState {
+export default class PlainState {
     constructor(initialValue, component) {
         this.component = component
         this.lastState = initialValue

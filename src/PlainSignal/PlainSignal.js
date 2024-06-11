@@ -1,4 +1,4 @@
-export class PlainSignal {
+export default class PlainSignal {
     constructor() {
         this.registered = {}
     }

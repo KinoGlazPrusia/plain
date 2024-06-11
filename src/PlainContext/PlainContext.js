@@ -1,4 +1,4 @@
-export class PlainContext {
+export default class PlainContext {
     constructor(name, role) {
         this.name = `${name}Context`
         this.role = role

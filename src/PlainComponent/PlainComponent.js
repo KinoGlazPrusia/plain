@@ -1,4 +1,4 @@
-export class PlainComponent extends HTMLElement {
+export default class PlainComponent extends HTMLElement {
     constructor(compName, stylePath) {
         super()
 
