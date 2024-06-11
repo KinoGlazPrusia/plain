@@ -159,7 +159,7 @@ class MyComponent extends PlainComponent
     }
 ...
 ```
-#### There's 3 different things you can do with signals
+#### There's 3 different things you can do with signals (register, emit, connect)
 ```javascript
 this.signals.register('signal-name') 
 // First of all register the signals you want the component to emit
@@ -290,7 +290,7 @@ class DynamicButton extends PlainComponent {
     }
 
     listeners() {
-        this.$('#dynamic-btn').onclick = () => tthis.toogle()
+        this.$('#dynamic-btn').onclick = () => this.toogle()
     }
 
     toogle() {
@@ -306,3 +306,4 @@ class DynamicButton extends PlainComponent {
 - [ ] Implement PlainContext.
 - [ ] Implement state propagation.
 - [ ] Implement methods to get parents and siblings.
+- [ ] Keep writting README file.
