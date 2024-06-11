@@ -1,14 +1,13 @@
 export default class PlainContext {
     constructor(name, role) {
         this.name = `${name}Context`
-        this.role = role
         this.initialise()
     }
 
     initialise() {
-        this.role === 'consumer' // or 'provider'
-            ? sessionStorage.setItem(this.name, JSON.stringify({}))
-            : null
+        sessionStorage.getItem(this.name)
+            ? null
+            : sessionStorage.setItem(this.name, JSON.stringify({}))
     }
 
     setData(data) {

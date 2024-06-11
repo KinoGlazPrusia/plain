@@ -307,3 +307,4 @@ class DynamicButton extends PlainComponent {
 - [ ] Implement state propagation.
 - [ ] Implement methods to get parents and siblings.
 - [ ] Keep writting README file.
+- [ ] Add PlainContext documentation.
