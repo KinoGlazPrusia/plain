@@ -1,13 +1,22 @@
 export default class PlainContext {
-    constructor(name, role) {
+    constructor(name, self) {
         this.name = `${name}Context`
+        this.subscribers = []
+
         this.initialise()
+        this.subscribe(self)
     }
 
     initialise() {
         sessionStorage.getItem(this.name)
             ? null
             : sessionStorage.setItem(this.name, JSON.stringify({}))
+    }
+
+    subscribe(self) {
+        if (!this.subscribers.includes(self)) {
+            this.subscribers.push(self)
+        }
     }
 
     setData(data) {
@@ -23,7 +32,16 @@ export default class PlainContext {
         return JSON.parse(sessionStorage.getItem(this.name))[key]
     }
 
+    propagate() {
+        this.subscribers.forEach(component => {
+            component.render()
+        })
+    }
+
     clear() {
         sessionStorage.removeItem(this.name)
     }
+
 }
+
+// Convertirlo a patrón singleton ¿?
