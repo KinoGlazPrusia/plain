@@ -1,5 +1,5 @@
 export default class PlainContext {
-    constructor(name, self) {
+    constructor(name, self) { // 'self' hace referencia al componente que usa el contexto
         this.name = `${name}Context`
         this.subscribers = []
 
