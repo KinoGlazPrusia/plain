@@ -308,3 +308,4 @@ class DynamicButton extends PlainComponent {
 - [ ] Implement methods to get parents and siblings.
 - [ ] Keep writting README file.
 - [ ] Add PlainContext documentation.
+- [ ] Create PlainRouter.
