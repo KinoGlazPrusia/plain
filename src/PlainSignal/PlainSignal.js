@@ -1,5 +1,6 @@
 export default class PlainSignal {
-    constructor() {
+    constructor(parent) {
+        this.parent = parent
         this.registered = {}
     }
 
@@ -11,7 +12,7 @@ export default class PlainSignal {
     emit(signal, args=null) {
         const connections = this.registered[signal]
         connections.forEach(conn => {
-            args ? conn.callback(args) : conn.callback()
+            args ? conn.callback(args) : conn.element[conn.callback.name]()
         })
     }
 
@@ -20,9 +21,10 @@ export default class PlainSignal {
             throw new Error(`${emitter}:'${signal}' signal does not exist.`)
         } else {
             emitter.signals.registered[signal].push({
-                element: this,
+                element: this.parent,
                 callback: callback
             })
         }
     }
 }
+
