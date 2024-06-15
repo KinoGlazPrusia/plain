@@ -13,9 +13,13 @@ Plain is a vanilla JavaScript library that provides the tools to easily and quic
 ```javascript
 import { PlainComponent } from 'plain-reactive'
 ```
-If you're not using a bundler you should import it with a relative path. Like this :
+If you're not using a resolver you should import it with a relative path. Like this :
 ```javascript
 import { PlainComponent } from 'node_modules/plain-reactive/src/index.js'
+```
+You can also import it with a CDN :
+```javascript
+import { PlainComponent } from 'https://cdn.jsdelivr.net/gh/KinoGlazPrusia/plain@main/src/index.js'
 ```
 
 #### 2. Initialize the component providing a name and specify the path to its stylesheet :
@@ -104,9 +108,13 @@ import myComponent from 'myComponent/myComponent.js'
 ```javascript
 import { PlainState } from 'plain-reactive'
 ```
-If you're not using a bundler you should import it with a relative path. Like this :
+If you're not using a resolver you should import it with a relative path. Like this :
 ```javascript
 import { PlainState } from 'node_modules/plain-reactive/src/index.js'
+```
+You can also import it with a CDN :
+```javascript
+import { PlainState } from 'https://cdn.jsdelivr.net/gh/KinoGlazPrusia/plain@main/src/index.js'
 ```
 
 #### 2. Then add any state you want in your component constructor
@@ -141,9 +149,13 @@ signal, execute a callback function.
 ```javascript
 import { PlainSignal } from 'plain-reactive'
 ```
-If you're not using a bundler you should import it with a relative path. Like this :
+If you're not using a resolver you should import it with a relative path. Like this :
 ```javascript
 import { PlainSignal } from 'node_modules/plain-reactive/src/index.js'
+```
+You can also import it with a CDN :
+```javascript
+import { PlainSignal } from 'https://cdn.jsdelivr.net/gh/KinoGlazPrusia/plain@main/src/index.js'
 ```
 
 #### 2. To habilitate signals in your component just add it to the constructor
