@@ -91,7 +91,8 @@ import myComponent from 'myComponent/myComponent.js'
 </head>
 
 <body>
-    <my-component/>
+    <my-component></my-component>
+    <!-- It's important to add the closing tag in order to make it work -->
 </body>
 
 </html>
@@ -154,8 +155,9 @@ class MyComponent extends PlainComponent
 
         ...
 
-        this.signals = new PlainSignal() 
+        this.signals = new PlainSignal(this) 
         // The attribute has to be called 'this.signals' in order to work
+        // The first parameter is a reference to your component
     }
 ...
 ```
@@ -246,8 +248,8 @@ export default customElements.define('receiver', Receiver)
 </head>
 
 <body>
-    <emitter id="emitter"/>
-    <receiver id="receiver"/>
+    <emitter id="emitter"></emitter>
+    <receiver id="receiver"></receiver>
 </body>
 
 </html>
@@ -257,7 +259,7 @@ export default customElements.define('receiver', Receiver)
 const emitter = document.getElementById('emitter')
 const receiver = document.getElementById('receiver')
 
-receiver.signals.connect(emitter, 'clicked', receiver.handleSignal())
+receiver.signals.connect(emitter, 'clicked', receiver.handleSignal)
 ```
 Now, each time the emitter button is clicked, the span content in the receiver
 will update with the number of clicks.
@@ -303,9 +305,9 @@ class DynamicButton extends PlainComponent {
 
 ## Roadmap
 
-- [ ] Implement PlainContext.
+- [x] Implement PlainContext.
+- [ ] Add PlainContext documentation.
 - [ ] Implement state propagation.
 - [ ] Implement methods to get parents and siblings.
 - [ ] Keep writting README file.
-- [ ] Add PlainContext documentation.
 - [ ] Create PlainRouter.
