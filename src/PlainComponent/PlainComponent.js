@@ -3,6 +3,7 @@ export default class PlainComponent extends HTMLElement {
         super()
 
         this.name = compName
+        this.parentComponent = null;
         this.shadow = this.setShadowDOM()
         this.styles = this.setStyle(stylePath)
         this.wrapper = this.setWrapper()
@@ -50,10 +51,17 @@ export default class PlainComponent extends HTMLElement {
 
     render() {
         this.wrapper.innerHTML = this.template()
+        this.adoption()
         this.listeners()
     }
 
     template() {} // Devuelve el HTML con la estructura de la página
 
     listeners() {} // Asigna listeners a los elementos interactivos
+
+    adoption() {
+        this.wrapper.querySelectorAll('*').forEach(children => {
+            children.parentComponent = this
+        })
+    }
 }

@@ -323,3 +323,6 @@ class DynamicButton extends PlainComponent {
 - [ ] Implement methods to get parents and siblings.
 - [ ] Keep writting README file.
 - [ ] Create PlainRouter.
+
+## Notes
+- Added a new attribute to the PlainComponent class called 'parentComponent' and a new method called 'adoption()' that will set the parentComponent attribute of all the children of the component. This is useful when you want to access the parent component from a child component and for example, to call a method of the parent component.
