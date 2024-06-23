@@ -21,6 +21,7 @@ You can also import it with a CDN :
 ```javascript
 import { PlainComponent } from 'https://cdn.jsdelivr.net/gh/KinoGlazPrusia/plain@main/src/index.js'
 ```
+*Some issues have been reported with the CDN version such as some components not being rendered correctly. If you're having problems with it, you can try using the relative path instead.*
 
 #### 2. Initialize the component providing a name and specify the path to its stylesheet :
 ```javascript 
@@ -276,6 +277,81 @@ receiver.signals.connect(emitter, 'clicked', receiver.handleSignal)
 Now, each time the emitter button is clicked, the span content in the receiver
 will update with the number of clicks.
 
+## Using PlainContext
+### You can use PlainContext to store data in a sessionStorage and access it from any component.
+Sometimes you'll need to store some data across your whole application during the user's session. For example, you can use PlainContext to store the user's profile data, or the current user's token. That's where PlainContext comes in handy.
+
+### Let's see an example!
+You don't need to initialize the PlainContext in your main script. It will act as a singleton and will be initialized automatically when you first use it.
+
+#### 1. First import PlainContext
+```javascript
+import { PlainContext } from 'plain-reactive'
+```
+If you're not using a resolver you should import it with a relative path. Like this :
+```javascript
+import { PlainContext } from 'node_modules/plain-reactive/src/index.js'
+```
+You can also import it with a CDN :
+```javascript
+import { PlainContext } from 'https://cdn.jsdelivr.net/gh/KinoGlazPrusia/plain@main/src/index.js'
+```
+
+#### 2. Then you'll have to initialise it inside the constructor of your component
+```javascript
+class MyComponent extends PlainComponent {
+    constructor() {
+        super('my-component', 'myComponent/myComponent.css')
+
+        /* You can use PlainContext to store data inside sessionStorage
+        The data is stored as a JSON object. 
+        
+        Be aware that you can only store the same type of data that 
+        sessionStorage can store.
+        
+        The first parameter is the name of the context, the second one is a 
+        reference to your component */
+
+        this.userContext = new PlainContext('user', this)
+    }
+    ...
+```
+
+#### 3. Then you can use the PlainContext methods to store and retrieve data
+- **setData** (data, propagate)
+- **getData** (key)
+- **clear** ( )  *This method will clear the context from sessionStorage and delete the PlainContext instance*
+
+```javascript
+// You can store data in the context
+
+/* It takes two parameters. 
+
+The first one is the data you want to store.
+
+The second one is a boolean that indicates if you want to re-render all the components that are using this context. 
+
+Its default value is false. */
+this.userContext.setData({ name: 'John Doe', age: 30 })
+
+// You can also retrieve the data from the context
+const userName = this.userContext.getData('name')
+```
+*If you need to check the keys you can allways take a look at the sessionStorage.*
+
+#### With this you can render dinamically your components based on the data you store in the context.
+
+#### 4. Then you can connect the components to the context by simply initialising the context with the same name.
+```javascript
+class MyOtherComponent extends PlainComponent {
+    constructor() {
+        super('my-other-component', 'myOtherComponent/myOtherComponent.css')
+
+        this.userContext = new PlainContext('user', this)
+    }
+    ...
+```
+
 ## Dynamic template rendering
 ### You can insert javascript code inside your template string to render it dynamically or conditionally. 
 ### Let's see an example!
@@ -314,15 +390,6 @@ class DynamicButton extends PlainComponent {
     }
 }
 ```
-
-## Roadmap
-
-- [x] Implement PlainContext.
-- [ ] Add PlainContext documentation.
-- [ ] Implement state propagation.
-- [ ] Implement methods to get parents and siblings.
-- [ ] Keep writting README file.
-- [ ] Create PlainRouter.
 
 ## Notes
 - Added a new attribute to the PlainComponent class called 'parentComponent' and a new method called 'adoption()' that will set the parentComponent attribute of all the children of the component. This is useful when you want to access the parent component from a child component and for example, to call a method of the parent component.
