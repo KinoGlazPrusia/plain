@@ -26,5 +26,29 @@ export default class PlainSignal {
             })
         }
     }
+
+    #similarSignal(signal) {
+        let matches = []
+        this.registered.keys().forEach(key => {
+            let counter = 0;
+            signal.split().forEach((char, index) => {
+                if (key.length - 1 <= index) {
+                    if (key[index] === char) counter++
+                }
+            })
+            matches[key] = counter
+        })
+        
+        let mostSimilar = null
+        let maxOccurences = 0
+        matches.forEach((key, value) => {
+            if (value > maxOccurences) {
+                maxOccurences = value
+                mostSimilar = key
+            }
+        })
+
+        return mostSimilar
+    }
 }
 

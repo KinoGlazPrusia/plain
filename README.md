@@ -391,5 +391,9 @@ class DynamicButton extends PlainComponent {
 }
 ```
 
-## Notes
-- Added a new attribute to the PlainComponent class called 'parentComponent' and a new method called 'adoption()' that will set the parentComponent attribute of all the children of the component. This is useful when you want to access the parent component from a child component and for example, to call a method of the parent component.
+## Patch Notes v.1.1.6
+- Added a new attribute to the PlainComponent class called 'parentComponent' and a new method called 'adoption()' that will set the parentComponent attribute for all the children of the component. This is useful when you want to access the parent component from a child component and for example, to call a method of the parent component. The method is not public. It sets its children automatically every time the component is rendered.
+
+- Added signal name suggestion in case that a signal name which is trying to be connected doesn't exists. (TODO)
+
+- Some of the class methods have been defined as private.

@@ -4,9 +4,9 @@ export default class PlainComponent extends HTMLElement {
 
         this.name = compName
         this.parentComponent = null;
-        this.shadow = this.setShadowDOM()
-        this.styles = this.setStyle(stylePath)
-        this.wrapper = this.setWrapper()
+        this.shadow = this.#setShadowDOM()
+        this.styles = this.#setStyle(stylePath)
+        this.wrapper = this.#setWrapper()
         this.signals = null
 
         this.shadow.appendChild(this.styles)
@@ -17,18 +17,18 @@ export default class PlainComponent extends HTMLElement {
         this.render() // Renderizado inicial al conectar el elemento
     }
 
-    setShadowDOM() {
+    #setShadowDOM() {
         const shadow = this.attachShadow({mode: 'open'})
         return shadow
     }
 
-    setWrapper() {
+    #setWrapper() {
         const wrapper = document.createElement('div')
         wrapper.classList.add(`${this.name}-wrapper`)
         return wrapper
     }
 
-    setStyle(path) {
+    #setStyle(path) {
         const style = document.createElement('style')
 
         const xhr = new XMLHttpRequest()
@@ -50,16 +50,16 @@ export default class PlainComponent extends HTMLElement {
     }
 
     render() {
-        this.wrapper.innerHTML = this.template()
-        this.adoption()
-        this.listeners()
+        this.wrapper.innerHTML = this.#template()
+        this.#adoption()
+        this.#listeners()
     }
 
-    template() {} // Devuelve el HTML con la estructura de la página
+    #template() {} // Devuelve el HTML con la estructura de la página
 
-    listeners() {} // Asigna listeners a los elementos interactivos
+    #listeners() {} // Asigna listeners a los elementos interactivos
 
-    adoption() {
+    #adoption() {
         this.wrapper.querySelectorAll('*').forEach(children => {
             children.parentComponent = this
         })
