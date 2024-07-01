@@ -18,7 +18,7 @@ export default class PlainSignal {
 
     connect(emitter, signal, callback) {
         if (!emitter.signals.registered[signal]) {
-            throw new Error(`${emitter}:'${signal}' signal does not exist.`)
+            throw new Error(`${emitter}:'${signal}' signal does not exist. Maybe you're trying to connect to ${this.#similarSignal(signal)}...`)
         } else {
             emitter.signals.registered[signal].push({
                 element: this.parent,
