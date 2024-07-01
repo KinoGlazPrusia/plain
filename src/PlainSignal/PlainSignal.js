@@ -1,5 +1,6 @@
 export default class PlainSignal {
     constructor(parent) {
+        if (!parent) throw new Error('You need to specify the parent of the signal. Use \'this\' as default.')
         this.parent = parent
         this.registered = {}
     }

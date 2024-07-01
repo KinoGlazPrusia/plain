@@ -50,16 +50,16 @@ export default class PlainComponent extends HTMLElement {
     }
 
     render() {
-        this.wrapper.innerHTML = this.#template()
-        this.#adoption()
-        this.#listeners()
+        this.wrapper.innerHTML = this.template()
+        this.adoption()
+        this.listeners()
     }
 
-    #template() {} // Devuelve el HTML con la estructura de la página
+    template() {} // Devuelve el HTML con la estructura de la página
 
-    #listeners() {} // Asigna listeners a los elementos interactivos
+    listeners() {} // Asigna listeners a los elementos interactivos
 
-    #adoption() {
+    adoption() {
         this.wrapper.querySelectorAll('*').forEach(children => {
             children.parentComponent = this
         })
