@@ -5,7 +5,7 @@ export default class PlainState {
         this.currentState = initialValue
     }
 
-    setState(nextState) {
+    setState(nextState, propagate = true) {
         // Implementar un sistema para poder acceder al estado previo directamente
         this.lastState = this.currentState
         this.currentState = nextState
