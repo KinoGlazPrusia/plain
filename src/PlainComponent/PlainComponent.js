@@ -31,6 +31,10 @@ export default class PlainComponent extends HTMLElement {
     #setStyle(path) {
         const style = document.createElement('style')
 
+        // Quizás se puede utilizar el método getDirectory() para que el usuario 
+        // solamente tenga que especificar el nombre del archivo de estilos y 
+        // automáticamente se busque en la carpeta en la que está definido el componente
+
         const xhr = new XMLHttpRequest() // Se utiliza XML... porque es síncrono
         xhr.open('GET', path, false) // Intentar automatizar la captura del path del estilo
         xhr.send()

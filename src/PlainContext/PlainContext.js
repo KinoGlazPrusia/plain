@@ -25,6 +25,12 @@ export default class PlainContext {
             : sessionStorage.setItem(this.name, JSON.stringify({}))
     }
 
+    #propagate() {
+        this.subscribers.forEach(component => {
+            component.render()
+        })
+    }
+
     subscribe(self) {
         if (!this.subscribers.includes(self)) {
             this.subscribers.push(self)
@@ -45,12 +51,6 @@ export default class PlainContext {
 
     getData(key) {
         return JSON.parse(sessionStorage.getItem(this.name))[key] 
-    }
-
-    #propagate() {
-        this.subscribers.forEach(component => {
-            component.render()
-        })
     }
 
     clear() {
