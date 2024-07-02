@@ -31,7 +31,7 @@ export default class PlainComponent extends HTMLElement {
     #setStyle(path) {
         const style = document.createElement('style')
 
-        const xhr = new XMLHttpRequest()
+        const xhr = new XMLHttpRequest() // Se utiliza XML... porque es síncrono
         xhr.open('GET', path, false) // Intentar automatizar la captura del path del estilo
         xhr.send()
 
