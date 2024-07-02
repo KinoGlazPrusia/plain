@@ -3,7 +3,7 @@ export default class PlainComponent extends HTMLElement {
         super()
 
         this.name = compName
-        this.parentComponent = null;
+        this.parentComponent = null; // The parent component is required because the parent is outside the shadow always, so it's not accesible with parentNode (review it)
         this.shadow = this.#setShadowDOM()
         this.styles = this.#setStyle(stylePath)
         this.wrapper = this.#setWrapper()
@@ -13,7 +13,7 @@ export default class PlainComponent extends HTMLElement {
         this.shadow.appendChild(this.wrapper)
     }
 
-    connectedCallback() {
+    connectedCallback() { // Revisar si este método puede ser privado o no
         this.render() // Renderizado inicial al conectar el elemento
     }
 
@@ -53,11 +53,14 @@ export default class PlainComponent extends HTMLElement {
         this.wrapper.innerHTML = this.template()
         this.adoption()
         this.listeners()
+        this.connectors()
     }
 
     template() {} // Devuelve el HTML con la estructura de la página
 
     listeners() {} // Asigna listeners a los elementos interactivos
+
+    connectors() {} // Asigna conexiones entre los componentes hijo
 
     adoption() {
         this.wrapper.querySelectorAll('*').forEach(children => {
