@@ -32,6 +32,7 @@ export default class PlainSignal {
         }
     }
 
+    /* TODO: Make this function work properly */
     #similarSignal(signal) {
         let matches = []
         this.registered.keys().forEach(key => {

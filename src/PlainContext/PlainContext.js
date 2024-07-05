@@ -46,7 +46,7 @@ export default class PlainContext {
         sessionStorage.setItem(this.name, JSON.stringify(context))
 
         // Context will propagate and re-render to all subscribed components
-        propagate ? this.#propagate(): null; // Se puede sustituir por la sintaxis propagate && this.propagate() ?
+        propagate && this.#propagate()
     }
 
     getData(key) {

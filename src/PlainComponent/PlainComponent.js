@@ -55,7 +55,7 @@ export default class PlainComponent extends HTMLElement {
 
     render() {
         this.wrapper.innerHTML = this.template()
-        this.adoption()
+        this.#adoption()
         this.listeners()
         this.connectors()
     }
@@ -66,7 +66,7 @@ export default class PlainComponent extends HTMLElement {
 
     connectors() {} // Asigna conexiones entre los componentes hijo
 
-    adoption() {
+    #adoption() {
         this.wrapper.querySelectorAll('*').forEach(children => {
             children.parentComponent = this
         })
