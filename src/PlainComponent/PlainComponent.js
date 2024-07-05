@@ -5,7 +5,7 @@ export default class PlainComponent extends HTMLElement {
         this.name = compName
         this.parentComponent = null; // The parent component is required because the parent is outside the shadow always, so it's not accesible with parentNode (review it)
         this.shadow = this.#setShadowDOM()
-        this.styles = this.#setStyle(stylePath)
+        this.styles = this.#setStyle(stylePath) // The path should be relative to the entry point of the app
         this.wrapper = this.#setWrapper()
         this.signals = null
 

@@ -13,7 +13,11 @@ export default class PlainSignal {
     emit(signal, args=null) {
         const connections = this.registered[signal]
         connections.forEach(conn => {
-            args ? conn.callback(args) : conn.element[conn.callback.name]()
+            if (!conn.element[conn.callback.name]) { // Si el callback es una función anónima
+                args ? conn.callback(args) : conn.callback()
+            } else { // Si el callback es un método del componente
+                args ? conn.element[conn.callback.name](args) : conn.element[conn.callback.name]()
+            }
         })
     }
 
