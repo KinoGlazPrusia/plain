@@ -1,3 +1,4 @@
+# **Documentation is going to get a major update soon and it will be published on the new website we're working on... Stay tuned!!!**
 # Plain
 Plain is a vanilla JavaScript library that provides the tools to easily and quickly build reusable reactive web components, eliminating the need to learn difficult frameworks or new syntax.
 
