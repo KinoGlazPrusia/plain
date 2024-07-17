@@ -25,6 +25,7 @@ export default class PlainComponent extends HTMLElement {
     #setWrapper() {
         const wrapper = document.createElement('div')
         wrapper.classList.add(`${this.name}-wrapper`)
+        wrapper.setAttribute('plan', 'wrapper')
         return wrapper
     }
 
