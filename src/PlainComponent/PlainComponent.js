@@ -51,7 +51,7 @@ export default class PlainComponent extends HTMLElement {
         if (element) {
             return element
         } else {
-            throw new Error(`Theres no such element as '${selector}' in this component`)
+            return null
         }
     }
 
