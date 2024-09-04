@@ -4,7 +4,7 @@ export default class PlainRouter {
     }
 
     parse() {
-        return window.location.href.replace(this.root, '')
+        return window.location.href.replace(this.root, '').replace(/\/$/, '');
     }
 
     route(routes) {
