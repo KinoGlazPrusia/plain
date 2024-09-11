@@ -55,6 +55,16 @@ export default class PlainComponent extends HTMLElement {
         }
     }
 
+    $$(selector) {
+        const collection = this.wrapper.querySelectorAll(selector) 
+        
+        if (collection) {
+            return collection
+        } else {
+            return null
+        }
+    }
+
     render() {
         this.wrapper.innerHTML = this.template()
         this.#adoption()
