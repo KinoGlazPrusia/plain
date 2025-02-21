@@ -1,6 +1,6 @@
 {
     "name": "plain-reactive",
-    "version": "1.1.8",
+    "version": "1.2.0",
     "description": "Plain is a vanilla JS library that provides the tools to easily and quickly build reusable reactive web components, without having to learn difficult frameworks or new syntaxis.",
     "main": "./src/index.js",
     "module": "./src/index.js",
