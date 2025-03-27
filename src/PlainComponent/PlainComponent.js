@@ -1,3 +1,5 @@
+import PlainStyle from '../PlainStyle/PlainStyle.js'
+
 export default class PlainComponent extends HTMLElement {
     constructor(compName, stylePath) {
         super()
@@ -30,19 +32,17 @@ export default class PlainComponent extends HTMLElement {
     }
 
     #setStyle(path = null) {
-        const style = document.createElement('style')
-
-        // Quizás se puede utilizar el método getDirectory() para que el usuario 
-        // solamente tenga que especificar el nombre del archivo de estilos y 
-        // automáticamente se busque en la carpeta en la que está definido el componente
-        if (path) {
-            const xhr = new XMLHttpRequest() // Se utiliza XML... porque es síncrono
-            xhr.open('GET', path, false) // Intentar automatizar la captura del path del estilo
-            xhr.send()
-            style.textContent = xhr.responseText
+        if (!path) {
+            console.warn(
+                `You haven't defined any style path for the component ${this.name}. 
+                This component won't have any styles embedded in the shadow DOM. 
+                If you want to use encapsulated styles, please define a path to the stylesheet in the constructor`
+            )
         }
 
-        return style
+        const style = new PlainStyle()
+        style.registerCSS(this.name, path)
+        return style.renderCSS(this.name)
     }
 
     $(selector) { // Función al estilo jQuery para retornar los elementos que componen el componente
@@ -66,10 +66,29 @@ export default class PlainComponent extends HTMLElement {
     }
 
     render() {
-        this.wrapper.innerHTML = this.template()
+        this.wrapper.innerHTML = this.template() // Añadir un método de excepción para elementos que no deban ser re-renderizados
         this.#adoption()
         this.listeners()
         this.connectors()
+    }
+
+    #checkModifiedElements(previousDOM, nextDOM) {
+        // Se checkea un nivel (wrapper) para ver si hay elementos que han cambiado (se han de chequear en paralelo el DOM anterior y el actual)
+        // Si hay algún elemento que se ha cambiado, se checkea de manera recursiva hasta que no se encuentre ningún elemento que haya cambiado
+            // Por cada elemento que haya cambiado, se hace un getModifiedElements para recuperar los elementos y su posición relativa dentro del nivel (wrapper)
+            // Se sustituyen los elementos modificados por los nuevos con el método #replaceModifiedElements
+    }
+
+    #getModifiedElements(previousHTML, nextHTML) {
+        // Example:
+        const modifiedElements = [
+            {html: '', position: 2}
+        ]
+    }
+
+    #replaceModifiedElements(modifiedElements) {
+        // Sustituimos en el wrapper los elementos modificados a través del index recuperado
+        // Manteniendo todos los elementos que no hayan cambiado intactos
     }
 
     template() {} // Devuelve el HTML con la estructura de la página
@@ -78,7 +97,9 @@ export default class PlainComponent extends HTMLElement {
 
     connectors() {} // Asigna conexiones entre los componentes hijo
 
-    #adoption() {
+    #adoption() { 
+        // Sometimes when children components are added to the DOM, they have no access to its parent until it have finished rendering the 
+        // template and after that executed the adoption method. This issue have to be addressed in the future.
         this.wrapper.querySelectorAll('*').forEach(children => {
             children.parentComponent = this
         })
