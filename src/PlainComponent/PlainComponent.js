@@ -17,6 +17,11 @@ export default class PlainComponent extends HTMLElement {
 
     connectedCallback() { // Revisar si este método puede ser privado o no
         this.render() // Renderizado inicial al conectar el elemento
+        this.elementConnected()
+    }
+
+    disconnectedCallback() {
+        this.elementDisconnected()
     }
 
     #setShadowDOM() {
@@ -66,10 +71,12 @@ export default class PlainComponent extends HTMLElement {
     }
 
     render() {
+        this.beforeRender()
         this.wrapper.innerHTML = this.template() // Añadir un método de excepción para elementos que no deban ser re-renderizados
         this.#adoption()
         this.listeners()
         this.connectors()
+        this.afterRender()
     }
 
     #checkModifiedElements(previousDOM, nextDOM) {
@@ -96,6 +103,14 @@ export default class PlainComponent extends HTMLElement {
     listeners() {} // Asigna listeners a los elementos interactivos
 
     connectors() {} // Asigna conexiones entre los componentes hijo
+
+    elementConnected() {} // Método que se ejecuta cuando un elemento del componente se conecta al DOM
+
+    elementDisconnected() {} // Método que se ejecuta cuando un elemento del componente se desconecta del DOM
+
+    beforeRender() {} // Método que se ejecuta antes de renderizar el componente
+
+    afterRender() {} // Método que se ejecuta después de renderizar el componente
 
     #adoption() { 
         // Sometimes when children components are added to the DOM, they have no access to its parent until it have finished rendering the 
