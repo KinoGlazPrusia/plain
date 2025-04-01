@@ -79,6 +79,20 @@ export default class PlainComponent extends HTMLElement {
         this.afterRender()
     }
 
+    /**
+     * TODO: Implementar sistema de renderizado parcial (VirtualDOM)
+     * 
+     * Implementar un sistema de renderizado eficiente que solo actualice
+     * las partes modificadas del DOM, similar a como funcionan frameworks como React o Vue.
+     * 
+     * Pasos a implementar:
+     * 1. Comparar el DOM anterior con el nuevo usando el método #checkModifiedElements
+     * 2. Identificar los elementos que han cambiado con #getModifiedElements
+     * 3. Reemplazar solo los elementos modificados con #replaceModifiedElements
+     * 4. Mantener el estado de los elementos no modificados (listeners, props, etc.)
+     *
+     * Esto mejorará el rendimiento evitando re-renderizados completos innecesarios.
+     */
     #checkModifiedElements(previousDOM, nextDOM) {
         // Se checkea un nivel (wrapper) para ver si hay elementos que han cambiado (se han de chequear en paralelo el DOM anterior y el actual)
         // Si hay algún elemento que se ha cambiado, se checkea de manera recursiva hasta que no se encuentre ningún elemento que haya cambiado
