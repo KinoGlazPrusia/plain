@@ -21,12 +21,14 @@ export default class PlainContext {
     }
 
     #initialise() {
+        // For session storage
         if (this.location === 'session') {
             sessionStorage.getItem(this.name)
                 ? null
                 : sessionStorage.setItem(this.name, JSON.stringify({}))
         }
 
+        // For local storage
         else if (this.location === 'local') {
             localStorage.getItem(this.name)
                 ? null
