@@ -20,6 +20,7 @@
         ".": "./src/index.js"
     },
     "scripts": {
-        "create": "node scripts/create.cjs"
+        "create": "node scripts/create.cjs",
+        "init": "node scripts/initialize.cjs"
     }
 }
