@@ -108,8 +108,8 @@ async function main() {
         const COMPONENT_NAME = componentName.split(/(?=[A-Z])/).join('-').toLowerCase()
         const RELATIVE_CSS_PATH = `${kwargs.folder}/${componentName}/${componentName}.css`
         
-        let jsBoilerplate = fs.readFileSync(path.join(__dirname, 'create-boilerplate.js'), 'utf8')
-        let cssBoilerplate = fs.readFileSync(path.join(__dirname, 'create-boilerplate.css'), 'utf8')
+        let jsBoilerplate = fs.readFileSync(path.join(__dirname, 'templates/boilerplates/component.js'), 'utf8')
+        let cssBoilerplate = fs.readFileSync(path.join(__dirname, 'templates/boilerplates/component.css'), 'utf8')
 
         jsBoilerplate = jsBoilerplate.replace(/{{CLASS_NAME}}/g, CLASS_NAME)
         jsBoilerplate = jsBoilerplate.replace(/{{COMPONENT_NAME}}/g, COMPONENT_NAME)
