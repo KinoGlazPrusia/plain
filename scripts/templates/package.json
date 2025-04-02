@@ -1,0 +1,20 @@
+{
+  "name": "{{APP_NAME_LOWER}}",
+  "version": "1.0.0",
+  "description": "Project created with Plain Reactive",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "live-server --port=8080 --entry-file=index.html",
+    "dev": "live-server --port=8080 --entry-file=index.html"
+  },
+  "dependencies": {
+    "plain-reactive": "latest"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "marked": "^4.3.0"
+  },
+  "author": "",
+  "license": "MIT"
+} 
