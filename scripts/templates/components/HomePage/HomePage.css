@@ -1,0 +1,46 @@
+.container h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.container p {
+    margin-bottom: 40px;
+    font-size: 1.125rem;
+    max-width: 640px;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 40px;
+    margin-top: 64px;
+}
+
+.feature {
+    margin-bottom: 16px;
+}
+
+.feature h3 {
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.feature p {
+    margin-bottom: 0;
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .container h2 {
+        font-size: 2rem;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        margin-top: 40px;
+    }
+} 

@@ -1,0 +1,47 @@
+.not-found {
+    text-align: center;
+    padding: 80px 24px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.not-found h2 {
+    font-size: 4rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.not-found p {
+    font-size: 1.25rem;
+    margin-bottom: 32px;
+    opacity: 0.8;
+}
+
+.home-link {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.home-link:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .not-found {
+        padding: 48px 24px;
+    }
+    
+    .not-found h2 {
+        font-size: 3rem;
+    }
+    
+    .not-found p {
+        font-size: 1rem;
+    }
+} 
