@@ -2,6 +2,7 @@ import { PlainComponent, PlainState, PlainSignal, PlainContext, PlainRouter} fro
 
 class {{CLASS_NAME}} extends PlainComponent {
     constructor() {
+        // The relative path is from the entry point of the App (index.html)
         super(`plain-{{COMPONENT_NAME}}`, `{{RELATIVE_CSS_PATH}}`)
     }
 
