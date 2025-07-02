@@ -76,7 +76,8 @@ export default class PlainComponent extends HTMLElement {
 
     render(
         forceFullRender = false, 
-        logRenderTime = true
+        logRenderChanges = true,
+        logRenderTime = false
     ) {
         const startTime = performance.now()
         
@@ -89,6 +90,11 @@ export default class PlainComponent extends HTMLElement {
                 this.wrapper.innerHTML, 
                 this.template()
             )
+
+            if (logRenderChanges) {
+                console.log("CHANGES", changes)
+            }
+
             this.#replaceDOM(changes)
         }
 
@@ -239,8 +245,8 @@ export default class PlainComponent extends HTMLElement {
 
             for (let i = 0; i < maxLength; i++) {
                 queue.push({
-                    prev: prevChildren[i],
-                    next: nextChildren[i],
+                    prev: prevChildren[i] || null,
+                    next: nextChildren[i] || null,
                     path: [...path, i]
                 })
             }
