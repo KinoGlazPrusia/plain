@@ -1,12 +1,16 @@
 export default class PlainContext {
     static instances = {}
 
-    constructor(contextName, attachedComponent, suscribe = true, location='session') { // 'attachedComponent' hace referencia al componente que usa el contexto
+    constructor(
+        contextName, 
+        attachedComponent, // 'attachedComponent' refers to the component that uses this context
+        suscribe = true, 
+        location='session'
+    ) { 
         this.name = `${contextName}Context`
+        
         const context = PlainContext.instances[this.name]
         if (context) {
-            // Por defecto el propio componente se suscribe, pero en el caso de un proveedor como el 
-            // componente raíz 'App' no debe suscribirse al contexto para no rerenderizarse con los cambios.
             suscribe && context.subscribe(attachedComponent)
             return context
         }
@@ -21,18 +25,21 @@ export default class PlainContext {
     }
 
     #initialise() {
-        // For session storage
-        if (this.location === 'session') {
-            sessionStorage.getItem(this.name)
-                ? null
-                : sessionStorage.setItem(this.name, JSON.stringify({}))
-        }
+        switch(this.location) {
+            case 'session':
+                sessionStorage.getItem(this.name)
+                    ? null
+                    : sessionStorage.setItem(this.name, JSON.stringify({}))
+                break
 
-        // For local storage
-        else if (this.location === 'local') {
-            localStorage.getItem(this.name)
-                ? null
-                : localStorage.setItem(this.name, JSON.stringify({}))
+            case 'local':
+                localStorage.getItem(this.name)
+                    ? null
+                    : localStorage.setItem(this.name, JSON.stringify({}))
+                break
+
+            default:
+                throw new Error('Invalid location. Session and local are the only valid locations.')
         }
     }
 
@@ -66,9 +73,8 @@ export default class PlainContext {
             context = {...context, ...data}
             localStorage.setItem(this.name, JSON.stringify(context))
         }
-
-        // Context will propagate and re-render to all subscribed components
-        propagate && this.#propagate()
+        
+        propagate && this.#propagate() // Context will propagate and re-render to all subscribed components
     }
 
     getData(key) {
