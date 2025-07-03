@@ -84,8 +84,16 @@ export default class PlainComponent extends HTMLElement {
         this.beforeRender()
 
         if (forceFullRender) {
+            console.warn(`
+                Rendering ${this.name} with full render (this is recommended for simple components with few children and no mixed states). 
+                For complex components with many children and mixed states, use the incremental render method with the forceFullRender parameter set to false.
+            `)
             this.wrapper.innerHTML = this.template()
         } else {
+            console.warn(`
+                Rendering ${this.name} with incremental changes (this is recommended for complex components with many children and mixed states). 
+                For better performance, use the full render method with the forceFullRender parameter set to true.
+            `)
             const changes = this.#compareDOM(
                 this.wrapper.innerHTML, 
                 this.template()
