@@ -1,26 +1,38 @@
-/**
- * TODO: Implementar funcionalidad completa del Router según la documentación en router.md
- * - Añadir gestión de rutas con parámetros (/productos/:id)
- * - Añadir gestión de rutas comodín (404)
- * - Añadir navegación programática
- * - Implementar gestión de título de página
- * - Añadir manejo de enlaces con data-link
- * - Permitir acceso a parámetros de ruta
- */
 export default class PlainRouter {
-    constructor(root) {
+    constructor(root, app) {
         this.root = root
+        this.app = app
+
+        this.routes = {}
+        this.currentRoute = window.location.pathname
+
+        this.init()
+    }
+
+    init() {
+        window.onpopstate = () => this.handleRouteChange()
+    }
+
+    navigateTo(path) {
+        window.history.pushState(null, null, path)
+        this.handleRouteChange()
+    }
+
+    handleRouteChange() {
+        const path = window.location.pathname || '/'
+        this.currentRoute = path
+        this.app.render()
     }
 
     parse() {
-        return window.location.href.replace(this.root, '').replace(/\/$/, '');
+        return window.location.pathname
     }
 
-    route(routes) {
-        if (this.parse() in routes) {
-            return routes[this.parse()]
+    setup(routes) {
+        const path = this.parse()
+        if (path in routes) {
+            return routes[path] 
         } 
         return routes['*']
     }
 }
-
