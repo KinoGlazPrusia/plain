@@ -8,7 +8,7 @@ class {{CLASS_NAME}} extends PlainComponent {
 
     template() {
         // Use lit-html extension for HTML syntax highlighting
-        return html`
+        return this.html`
             <!-- Here you can define the HTML structure of the component dynamically -->
         `
     }

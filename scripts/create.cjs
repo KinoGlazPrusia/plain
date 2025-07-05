@@ -10,6 +10,28 @@ const rl = readline.createInterface({
     output: process.stdout
 })
 
+const question = (query) => {
+    return new Promise(resolve => {
+        rl.question(query, answer => {
+            resolve(answer)
+        })
+    })
+}
+
+const normalizeComponentName = (name) => {
+    // Split by non-alphanumeric characters and camelCase boundaries
+    const words = name
+        .replace(/[^a-zA-Z0-9]/g, ' ') // Replace special chars with spaces
+        .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space before uppercase letters
+        .split(/\s+/) // Split by spaces
+        .filter(word => word.length > 0) // Remove empty strings
+    
+    // Convert each word to Title Case and join
+    return words
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join('')
+}
+
 const folderExists = (path) => {
     return fs.existsSync(path)
 }
@@ -52,8 +74,9 @@ const changeComponentName = async (kwargs, name) => {
                         process.exit(1)
                     }
 
-                    kwargs.components[kwargs.components.indexOf(name)] = newName
-                    resolve(newName)
+                    const normalizedName = normalizeComponentName(newName)
+                    kwargs.components[kwargs.components.indexOf(name)] = normalizedName
+                    resolve(normalizedName)
                 })
             })
         }
@@ -68,16 +91,44 @@ const changeComponentName = async (kwargs, name) => {
 async function main() {
     const components = process.argv.slice(2) // npm run create [folderName] [componentName-1] [componentName-2] ...
 
-    // Check the minimum arguments are present in the command
-    if (components.length < 2) {
-        console.error('You have to provide the root folder name and at least one component name. Example: npm run create src ComponentName')
-        process.exit(1)
-    }   
+    let folderName = components[0]
+    let componentNames = components.slice(1)
+
+    // If no folder name is provided, ask for it
+    if (!folderName) {
+        folderName = await question("Root folder name: ")
+        if (!folderName) {
+            console.error('You have to provide a root folder name. Example: npm run create src ComponentName')
+            rl.close()
+            process.exit(1)
+        }
+    }
+
+    // If no component names are provided, ask for at least one
+    if (componentNames.length === 0) {
+        const componentInput = await question("Component name(s) (separate multiple components with spaces): ")
+        if (!componentInput) {
+            console.error('You have to provide at least one component name. Example: npm run create src ComponentName')
+            rl.close()
+            process.exit(1)
+        }
+        // Split the input by spaces and filter out empty strings
+        componentNames = componentInput.split(/\s+/).filter(name => name.trim().length > 0)
+        
+        if (componentNames.length === 0) {
+            console.error('You have to provide at least one valid component name.')
+            rl.close()
+            process.exit(1)
+        }
+    }
+    
+    // Normalize component names (First letter uppercase, rest lowercase)
+    componentNames = componentNames.map(name => normalizeComponentName(name))
     
     // Store arguments in a dictionary
     const kwargs = {
-        folder: components[0],
-        components: components.slice(1)
+        folder: folderName,
+        components: componentNames
     }
     
     // Check if the root folder exists and if not, create it
@@ -119,6 +170,8 @@ async function main() {
         fs.writeFileSync(path.join(folderPath, `${componentName}.js`), jsBoilerplate)
         fs.writeFileSync(path.join(folderPath, `${componentName}.css`), cssBoilerplate)
     }
+
+    rl.close()
 }
 
 main().catch(error => {
