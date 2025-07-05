@@ -2,6 +2,12 @@
 
 Plain is a vanilla JavaScript library that provides tools to easily and quickly build reusable reactive web components, without having to learn complex frameworks or new syntax.
 
+## 📜 Licensing
+
+Plain is licensed under the **MIT License** - free for all uses including commercial applications.
+
+[📋 See usage guidelines](../TERMS.md)
+
 ## Index
 
 - [Installation and Setup](./installation.md)
@@ -11,6 +17,7 @@ Plain is a vanilla JavaScript library that provides tools to easily and quickly 
 - [Context](./context.md)
 - [Routing](./router.md)
 - [Styles](./styles.md)
+- [Usage Guidelines](../TERMS.md)
 
 ## Main Features
 
@@ -84,6 +91,13 @@ Use it in HTML:
 ## License
 
 Plain is distributed under the [MIT License](https://opensource.org/licenses/MIT).
+
+### What this means:
+
+- ✅ **Free for**: Personal projects, education, open source projects, commercial applications
+- ✅ **No restrictions**: Keep your application source code private
+- ✅ **Commercial friendly**: Use in products you sell
+- 🤝 **Community guidelines**: We encourage responsible use ([see terms](../TERMS.md))
 
 ---
 
