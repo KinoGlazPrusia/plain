@@ -1,11 +1,11 @@
 import PlainStyle from '../PlainStyle/PlainStyle.js'
 
 export default class PlainComponent extends HTMLElement {
-    constructor(compName, stylePath) {
+    constructor(componentName, stylePath) {
         super()
 
-        this.name = compName
-        this.parentComponent = null; // The parent component is required because the parent is outside the shadow always, so it's not accesible with parentNode (review it)
+        this.name = componentName
+        this.parentComponent = null // The parent component is required because the parent is outside the shadow always, so it's not accesible with parentNode
         this.shadow = this.#setShadowDOM()
         this.styles = this.#setStyle(stylePath) // The path should be relative to the entry point of the app
         this.wrapper = this.#setWrapper()
@@ -15,8 +15,8 @@ export default class PlainComponent extends HTMLElement {
         this.shadow.appendChild(this.wrapper)
     }
 
-    connectedCallback() { // Revisar si este método puede ser privado o no
-        this.render() // Renderizado inicial al conectar el elemento
+    connectedCallback() {
+        this.render()
         this.elementConnected()
     }
 
@@ -50,7 +50,7 @@ export default class PlainComponent extends HTMLElement {
         return style.renderCSS(this.name)
     }
 
-    $(selector) { // Función al estilo jQuery para retornar los elementos que componen el componente
+    $(selector) {
         const element = this.wrapper.querySelector(selector) 
         
         if (element) {
@@ -70,46 +70,197 @@ export default class PlainComponent extends HTMLElement {
         }
     }
 
-    render() {
+    html(strings, ...values) {
+        return strings.reduce((result, str, i) => result + str + (values[i] || ''), '')
+    }
+
+    render(
+        forceFullRender = false, 
+        logRenderChanges = true,
+        logRenderTime = false
+    ) {
+        const startTime = performance.now()
+        
         this.beforeRender()
-        this.wrapper.innerHTML = this.template() // Añadir un método de excepción para elementos que no deban ser re-renderizados
+
+        if (forceFullRender) {
+            console.warn(`
+                Rendering ${this.name} with full render (this is recommended for simple components with few children and no mixed states). 
+                For complex components with many children and mixed states, use the incremental render method with the forceFullRender parameter set to false.
+            `)
+            this.wrapper.innerHTML = this.template()
+        } else {
+            console.warn(`
+                Rendering ${this.name} with incremental changes (this is recommended for complex components with many children and mixed states). 
+                For better performance, use the full render method with the forceFullRender parameter set to true.
+            `)
+            const changes = this.#compareDOM(
+                this.wrapper.innerHTML, 
+                this.template()
+            )
+
+            if (logRenderChanges) {
+                console.log("CHANGES", changes)
+            }
+
+            this.#replaceDOM(changes)
+        }
+
         this.#adoption()
         this.listeners()
         this.connectors()
         this.afterRender()
+
+        if (logRenderTime) {
+            const endTime = performance.now()
+            const duration = (endTime - startTime).toFixed(2)
+            console.log(`PlainComponent render (${this.name}): ${duration}ms`)
+        }
     }
 
-    /**
-     * TODO: Implementar sistema de renderizado parcial (VirtualDOM)
-     * 
-     * Implementar un sistema de renderizado eficiente que solo actualice
-     * las partes modificadas del DOM, similar a como funcionan frameworks como React o Vue.
-     * 
-     * Pasos a implementar:
-     * 1. Comparar el DOM anterior con el nuevo usando el método #checkModifiedElements
-     * 2. Identificar los elementos que han cambiado con #getModifiedElements
-     * 3. Reemplazar solo los elementos modificados con #replaceModifiedElements
-     * 4. Mantener el estado de los elementos no modificados (listeners, props, etc.)
-     *
-     * Esto mejorará el rendimiento evitando re-renderizados completos innecesarios.
-     */
-    #checkModifiedElements(previousDOM, nextDOM) {
-        // Se checkea un nivel (wrapper) para ver si hay elementos que han cambiado (se han de chequear en paralelo el DOM anterior y el actual)
-        // Si hay algún elemento que se ha cambiado, se checkea de manera recursiva hasta que no se encuentre ningún elemento que haya cambiado
-            // Por cada elemento que haya cambiado, se hace un getModifiedElements para recuperar los elementos y su posición relativa dentro del nivel (wrapper)
-            // Se sustituyen los elementos modificados por los nuevos con el método #replaceModifiedElements
+    #replaceDOM(changes) {
+        Object.entries(changes).forEach(([path, change]) => {
+            if (path === '') {
+                this.wrapper.innerHTML = change.element.outerHTML || change.element.textContent || ''
+                return
+            }
+
+            const indexes = path === '' 
+                ? [] 
+                : path.split('.').map(idx => Number(idx))
+
+            const parentPath = indexes.slice(0, -1)
+            const targetIndex = indexes[indexes.length - 1]
+
+            const parentNode = this.#getNodeByPath(this.wrapper, parentPath)
+
+            if (!parentNode) {
+                console.warn(`PlainComponent: unable to resolve parent path ",${parentPath.join('.')}", skipping change`)
+                return
+            }
+
+            switch (change.type) {
+                case 'added': {
+                    const referenceNode = parentNode.childNodes[targetIndex] || null
+                    parentNode.insertBefore(change.element.cloneNode(true), referenceNode)
+                    break
+                }
+                case 'removed': {
+                    const nodeToRemove = parentNode.childNodes[targetIndex]
+                    nodeToRemove && parentNode.removeChild(nodeToRemove)
+                    break
+                }
+                case 'type_changed':
+                case 'attributes_changed': {
+                    const nodeToReplace = parentNode.childNodes[targetIndex]
+                    if (nodeToReplace) {
+                        parentNode.replaceChild(change.element.cloneNode(true), nodeToReplace)
+                    }
+                    break
+                }
+                case 'text_changed': {
+                    const textNode = parentNode.childNodes[targetIndex]
+                    if (textNode) {
+                        textNode.textContent = change.element.textContent
+                    }
+                    break
+                }
+                default:
+                    console.warn(`PlainComponent: unknown change type ${change.type}`)
+            }
+        })
     }
 
-    #getModifiedElements(previousHTML, nextHTML) {
-        // Example:
-        const modifiedElements = [
-            {html: '', position: 2}
-        ]
+    #getNodeByPath(base, indexes) {
+        let node = base
+        for (const idx of indexes) {
+            if (!node || !node.childNodes || idx >= node.childNodes.length) {
+                return null
+            }
+            node = node.childNodes[idx]
+        }
+        return node
     }
 
-    #replaceModifiedElements(modifiedElements) {
-        // Sustituimos en el wrapper los elementos modificados a través del index recuperado
-        // Manteniendo todos los elementos que no hayan cambiado intactos
+    #compareDOM(previousDOM, nextDOM) {
+        const parser = new DOMParser()
+        
+        const prev = parser.parseFromString(previousDOM, 'text/html')
+        const next = parser.parseFromString(nextDOM, 'text/html')
+
+        const changes = {}
+
+        const queue = [{
+            prev: prev.body,
+            next: next.body,
+            path: []
+        }]
+
+        while (queue.length) {
+            const {prev, next, path} = queue.shift()
+
+            if (!prev && next) {
+                changes[path.join('.')] = {
+                    type: 'added',
+                    element: next.cloneNode(true)
+                }
+                continue
+            }
+
+            if (prev && !next) {
+                changes[path.join('.')] = {
+                    type: 'removed',
+                    element: prev.cloneNode(true)
+                }
+                continue
+            }
+
+           if (prev.nodeType !== next.nodeType) {
+                changes[path.join('.')] = {
+                    type: 'type_changed',
+                    element: next.cloneNode(true)
+                }
+                continue
+            }
+
+            if (
+                prev.nodeType === Node.TEXT_NODE && 
+                prev.textContent.trim() !== next.textContent.trim()
+            ) {
+                changes[path.join('.')] = {
+                    type: 'text_changed',
+                    element: next.cloneNode(true)
+                }
+                continue
+            }
+
+            if (
+                prev.nodeType === Node.ELEMENT_NODE && 
+                next.nodeType === Node.ELEMENT_NODE
+            ) {
+                if (prev.attributes.length !== next.attributes.length) {
+                    changes[path.join('.')] = {
+                        type: 'attributes_changed',
+                        element: next.cloneNode(true)
+                    }
+                    continue
+                }
+            }
+
+            const prevChildren = Array.from(prev.childNodes)
+            const nextChildren = Array.from(next.childNodes)
+            const maxLength = Math.max(prevChildren.length, nextChildren.length)
+
+            for (let i = 0; i < maxLength; i++) {
+                queue.push({
+                    prev: prevChildren[i] || null,
+                    next: nextChildren[i] || null,
+                    path: [...path, i]
+                })
+            }
+        }
+
+        return changes
     }
 
     template() {} // Devuelve el HTML con la estructura de la página
