@@ -10,13 +10,21 @@ Plain is licensed under the **MIT License** - free for all uses including commer
 
 ## Index
 
+### Getting Started
 - [Installation and Setup](./installation.md)
+- [Complete API Reference](./api-reference.md) 📚
+- [Quick Reference Card](./quick-reference.md) ⚡
+- [Examples Collection](./examples-collection.md) 🎯
+
+### Core Modules
 - [Components](./components.md)
 - [State](./state.md)
 - [Signals](./signals.md)
 - [Context](./context.md)
 - [Routing](./router.md)
 - [Styles](./styles.md)
+
+### Additional Resources
 - [Usage Guidelines](../TERMS.md)
 
 ## Main Features
