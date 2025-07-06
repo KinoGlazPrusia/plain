@@ -74,9 +74,10 @@ export default class PlainComponent extends HTMLElement {
         return strings.reduce((result, str, i) => result + str + (values[i] || ''), '')
     }
 
+    // TODO: Solve bug with incremental rendering (detected with page changes orchestrated by the router)
     render(
-        forceFullRender = false, 
-        logRenderChanges = true,
+        forceFullRender = true, 
+        logRenderChanges = false,
         logRenderTime = false
     ) {
         const startTime = performance.now()
