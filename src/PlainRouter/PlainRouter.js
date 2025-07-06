@@ -21,7 +21,7 @@ export default class PlainRouter {
     handleRouteChange() {
         const path = window.location.pathname || '/'
         this.currentRoute = path
-        this.app.render()
+        this.app.render(true)
     }
 
     parse() {

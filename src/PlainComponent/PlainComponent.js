@@ -76,7 +76,7 @@ export default class PlainComponent extends HTMLElement {
 
     // TODO: Solve bug with incremental rendering (detected with page changes orchestrated by the router)
     render(
-        forceFullRender = true, 
+        forceFullRender = false, 
         logRenderChanges = false,
         logRenderTime = false
     ) {
