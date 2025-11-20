@@ -1,4 +1,4 @@
-# Plain Reactive Framework
+# Plain Reactive
 
 > A vanilla JavaScript library for building reusable reactive web components
 
